@@ -1,0 +1,72 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    platform: linux/arm64
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: "db"
+      DB_PORT: "3306"
+      DB_USER: "arjun"
+      DB_PASSWORD: "password"
+      DB_DATABASE: "mysqldb"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    restart: unless-stopped
+    # Add a startup delay to ensure MySQL is fully initialized
+    command: >
+      sh -c "
+        echo 'Waiting for MySQL to be ready...'
+        sleep 10
+        npm start
+      "
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    platform: linux/arm64
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: "development"
+      VITE_API_URL: "http://backend:3000/api"
+    restart: unless-stopped
+
+  db:
+    image: mariadb:10.6
+    platform: linux/arm64
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "rootpassword"
+      MYSQL_DATABASE: "mysqldb"
+      MYSQL_USER: "arjun"
+      MYSQL_PASSWORD: "password"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  mysql_data:
+
+networks:
+  default:
+    name: jimzel-network
