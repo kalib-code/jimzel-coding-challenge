@@ -7,6 +7,7 @@ import React from "react";
 import { useNavigate, useParams } from "react-router";
 import { IEmployee } from "../../interfaces";
 import { IVendor } from "../../interfaces/reference";
+import { PayslipCalculator } from "../../components/payslip";
 
 // Component to fetch and display vendor information
 const VendorInfo: React.FC<{ vendorId?: number }> = ({ vendorId }) => {
@@ -398,6 +399,11 @@ export const EmployeeShow: React.FC = () => {
                   </div>
                 </div>
               </Card>
+            </div>
+
+            {/* Payslip Calculator Component */}
+            <div className="col-12">
+              <PayslipCalculator employee={employee} />
             </div>
           </div>
         </TabPanel>

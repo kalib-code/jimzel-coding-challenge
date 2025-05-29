@@ -37,6 +37,9 @@ import { LoanEdit } from "./pages/loans/edit";
 import { LoanList } from "./pages/loans/list";
 import { LoanShow } from "./pages/loans/show";
 
+// Government rates page
+import { GovernmentRatesList } from "./pages/government-rates";
+
 // Reference data pages
 
 // Import custom data provider
@@ -97,6 +100,15 @@ function App() {
                   canDelete: true,
                   label: "Loans",
                 },
+              },
+              {
+                name: "government-rates",
+                list: "/government-rates",
+                meta: {
+                  canDelete: false,
+                  label: "Government Rates",
+                  icon: "pi pi-chart-bar"
+                },
               }
             ]}
           >
@@ -130,6 +142,9 @@ function App() {
                 <Route path="/loans/create" element={<LoanCreate />} />
                 <Route path="/loans/:id" element={<LoanShow />} />
                 <Route path="/loans/:id/edit" element={<LoanEdit />} />
+
+                {/* Government Rates route */}
+                <Route path="/government-rates" element={<GovernmentRatesList />} />
 
                 <Route path="*" element={<ErrorComponent />} />
               </Route>
