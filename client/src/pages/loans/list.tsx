@@ -67,8 +67,7 @@ export const LoanList: React.FC = () => {
   const header = (
     <div className="flex justify-content-between align-items-center">
       <h5 className="m-0">Loans</h5>
-      <span className="p-input-icon-left">
-        <i className="pi pi-search" />
+      <span>
         <InputText
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}

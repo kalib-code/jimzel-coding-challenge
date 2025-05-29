@@ -98,8 +98,7 @@ export const EmployeeList: React.FC = () => {
 
       <Card className="mb-4">
         <div className="flex justify-content-between">
-          <div className="p-input-icon-left w-full md:w-6">
-            <i className="pi pi-search" />
+          <div className="w-full md:w-6">
             <InputText
               value={filters.q}
               onChange={(e) => handleSearch(e.target.value)}

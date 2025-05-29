@@ -103,7 +103,7 @@ export const LoanForm: React.FC<LoanFormProps> = ({
 
   const { options: employeeOptions, isLoading: employeesLoading } = useSelect({
     resource: "employees",
-    optionLabel: "full_name",
+    optionLabel: (item) => `${item.first_name} ${item.middle_name ? item.middle_name + ' ' : ''}${item.last_name}${item.suffix ? ' ' + item.suffix : ''}`,
     optionValue: "id",
     filters: [
       {
