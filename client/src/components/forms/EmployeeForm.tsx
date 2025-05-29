@@ -25,8 +25,27 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
 }) => {
   const navigate = useNavigate();
   // Track active status with a separate state
+  // Track checkbox states with separate state variables to ensure they initialize correctly
   const [isActiveState, setIsActiveState] = React.useState<boolean>(
     initialValues?.active === undefined ? true : !!initialValues.active
+  );
+  const [isMinimumEarnerState, setIsMinimumEarnerState] = React.useState<boolean>(
+    !!initialValues?.minimum_earner
+  );
+  const [isTaxWithheldState, setIsTaxWithheldState] = React.useState<boolean>(
+    initialValues?.tax_withheld === undefined ? true : !!initialValues.tax_withheld
+  );
+  const [isSssGsisWithheldState, setIsSssGsisWithheldState] = React.useState<boolean>(
+    initialValues?.sss_gsis_withheld === undefined ? true : !!initialValues.sss_gsis_withheld
+  );
+  const [isPhicWithheldState, setIsPhicWithheldState] = React.useState<boolean>(
+    initialValues?.phic_withheld === undefined ? true : !!initialValues.phic_withheld
+  );
+  const [isHdmfWithheldState, setIsHdmfWithheldState] = React.useState<boolean>(
+    initialValues?.hdmf_withheld === undefined ? true : !!initialValues.hdmf_withheld
+  );
+  const [isKasamBahayState, setIsKasamBahayState] = React.useState<boolean>(
+    !!initialValues?.kasam_bahay
   );
   const {
     refineCore: { onFinish, formLoading },
@@ -96,9 +115,25 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
   ];
 
   const onSubmit = (data: IEmployee) => {
-    // Use our separate state variable for active status
+    // Use our separate state variables for checkbox values
     data.active = isActiveState;
-    console.log("Submitting employee with active status:", data.active);
+    data.minimum_earner = isMinimumEarnerState;
+    data.tax_withheld = isTaxWithheldState;
+    data.sss_gsis_withheld = isSssGsisWithheldState;
+    data.phic_withheld = isPhicWithheldState;
+    data.hdmf_withheld = isHdmfWithheldState;
+    data.kasam_bahay = isKasamBahayState;
+
+    console.log("Submitting employee with data:", {
+      active: data.active,
+      minimum_earner: data.minimum_earner,
+      tax_withheld: data.tax_withheld,
+      sss_gsis_withheld: data.sss_gsis_withheld,
+      phic_withheld: data.phic_withheld,
+      hdmf_withheld: data.hdmf_withheld,
+      kasam_bahay: data.kasam_bahay
+    });
+
     onFinish(data);
   };
 
@@ -302,8 +337,11 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
                     <div className="flex align-items-center">
                       <Checkbox
                         inputId="kasam_bahay"
-                        checked={watch("kasam_bahay")}
-                        onChange={(e) => setValue("kasam_bahay", e.checked)}
+                        checked={isKasamBahayState}
+                        onChange={(e) => {
+                          setIsKasamBahayState(e.checked);
+                          setValue("kasam_bahay", e.checked);
+                        }}
                       />
                       <label htmlFor="kasam_bahay" className="ml-2">
                         Yes
@@ -550,8 +588,11 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
                     <div className="flex align-items-center">
                       <Checkbox
                         inputId="minimum_earner"
-                        checked={watch("minimum_earner")}
-                        onChange={(e) => setValue("minimum_earner", e.checked)}
+                        checked={isMinimumEarnerState}
+                        onChange={(e) => {
+                          setIsMinimumEarnerState(e.checked);
+                          setValue("minimum_earner", e.checked);
+                        }}
                       />
                       <label htmlFor="minimum_earner" className="ml-2">
                         Yes
@@ -680,8 +721,11 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
                     <div className="flex align-items-center">
                       <Checkbox
                         inputId="tax_withheld"
-                        checked={watch("tax_withheld")}
-                        onChange={(e) => setValue("tax_withheld", e.checked)}
+                        checked={isTaxWithheldState}
+                        onChange={(e) => {
+                          setIsTaxWithheldState(e.checked);
+                          setValue("tax_withheld", e.checked);
+                        }}
                       />
                       <label htmlFor="tax_withheld" className="ml-2">
                         Yes
@@ -717,8 +761,11 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
                     <div className="flex align-items-center">
                       <Checkbox
                         inputId="sss_gsis_withheld"
-                        checked={watch("sss_gsis_withheld")}
-                        onChange={(e) => setValue("sss_gsis_withheld", e.checked)}
+                        checked={isSssGsisWithheldState}
+                        onChange={(e) => {
+                          setIsSssGsisWithheldState(e.checked);
+                          setValue("sss_gsis_withheld", e.checked);
+                        }}
                       />
                       <label htmlFor="sss_gsis_withheld" className="ml-2">
                         Yes
@@ -750,8 +797,11 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
                     <div className="flex align-items-center">
                       <Checkbox
                         inputId="phic_withheld"
-                        checked={watch("phic_withheld")}
-                        onChange={(e) => setValue("phic_withheld", e.checked)}
+                        checked={isPhicWithheldState}
+                        onChange={(e) => {
+                          setIsPhicWithheldState(e.checked);
+                          setValue("phic_withheld", e.checked);
+                        }}
                       />
                       <label htmlFor="phic_withheld" className="ml-2">
                         Yes
@@ -783,8 +833,11 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
                     <div className="flex align-items-center">
                       <Checkbox
                         inputId="hdmf_withheld"
-                        checked={watch("hdmf_withheld")}
-                        onChange={(e) => setValue("hdmf_withheld", e.checked)}
+                        checked={isHdmfWithheldState}
+                        onChange={(e) => {
+                          setIsHdmfWithheldState(e.checked);
+                          setValue("hdmf_withheld", e.checked);
+                        }}
                       />
                       <label htmlFor="hdmf_withheld" className="ml-2">
                         Yes
